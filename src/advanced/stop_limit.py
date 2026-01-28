@@ -84,6 +84,10 @@ class StopLimitOrder:
                 kwargs['timeInForce'] = 'GTC'  # Good Till Cancel
 
             order = self.client.client.futures_create_order(
+                symbol=symbol,
+                side=side,
+                type='STOP',
+                quantity=quantity,
                 price=limit_price,
                 stopPrice=stop_price,
                 **kwargs
