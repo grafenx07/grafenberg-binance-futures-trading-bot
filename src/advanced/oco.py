@@ -76,13 +76,13 @@ class OCOOrder:
                 kwargs['timeInForce'] = 'GTC'
 
             # Place OCO order
-            order = self.client.client.new_oco_order(
+            order = self.client.client.futures_create_order(
                 symbol=symbol,
                 side=side,
                 quantity=quantity,
-                price=take_profit,  # Take profit limit price
+                type='STOP',
+                price=take_profit,  # Take profit price
                 stopPrice=stop_loss,  # Stop loss trigger price
-                stopLimitPrice=stop_loss,  # Stop loss limit price (same as stop for OCO)
                 **kwargs
             )
 

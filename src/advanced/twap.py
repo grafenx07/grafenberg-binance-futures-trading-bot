@@ -78,7 +78,7 @@ class TWAPStrategy:
             for i in range(num_orders):
                 try:
                     # Place market order
-                    order = self.client.client.new_order(
+                    order = self.client.client.futures_create_order(
                         symbol=symbol,
                         side=side,
                         type='MARKET',

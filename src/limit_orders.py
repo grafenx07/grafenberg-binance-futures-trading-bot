@@ -74,7 +74,7 @@ class LimitOrder:
                 kwargs['timeInForce'] = 'GTC'  # Good Till Cancel
 
             # Place order
-            order = self.client.client.new_order(
+            order = self.client.client.futures_create_order(
                 symbol=symbol,
                 side=side,
                 type='LIMIT',

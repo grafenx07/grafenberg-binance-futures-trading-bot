@@ -22,7 +22,7 @@ pip install -r requirements.txt
 
 ### Create Binance Testnet Account
 1. Go to **https://testnet.binancefuture.com**
-2. Click "Sign up" 
+2. Click "Sign up"
 3. Create account (email + password, no KYC needed)
 
 ### Generate API Keys
@@ -163,12 +163,12 @@ d:\Github Projects\grafenberg_langpen_binance_bot\
 
 ## Key Features You Have Access To
 
-✓ **Core Orders**: Market, Limit  
-✓ **Advanced Orders**: Stop-Limit, OCO, TWAP, Grid  
-✓ **Validation**: Comprehensive input checking  
-✓ **Logging**: Structured, timestamped, rotating logs  
-✓ **Risk Management**: Balance checks, leverage control  
-✓ **Performance Tracking**: P&L, win rate, metrics  
+✓ **Core Orders**: Market, Limit
+✓ **Advanced Orders**: Stop-Limit, OCO, TWAP, Grid
+✓ **Validation**: Comprehensive input checking
+✓ **Logging**: Structured, timestamped, rotating logs
+✓ **Risk Management**: Balance checks, leverage control
+✓ **Performance Tracking**: P&L, win rate, metrics
 
 ---
 

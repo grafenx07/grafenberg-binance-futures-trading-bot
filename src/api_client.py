@@ -2,8 +2,7 @@
 Base API client for Binance Futures
 Handles connection, authentication, and common API operations
 """
-from binance.cm_futures import CMFutures
-from binance.um_futures import UMFutures
+from binance.client import Client
 from src.config import Config
 from src.logger import bot_logger
 from src.validators import ValidationError
@@ -16,10 +15,10 @@ class BinanceAPIClient:
         """Initialize Binance API client"""
         try:
             Config.validate()
-            self.client = UMFutures(
-                key=Config.BINANCE_API_KEY,
-                secret=Config.BINANCE_SECRET_KEY,
-                base_url=Config.get_api_url()
+            self.client = Client(
+                api_key=Config.BINANCE_API_KEY,
+                api_secret=Config.BINANCE_SECRET_KEY,
+                testnet=Config.TESTNET
             )
             bot_logger.info(
                 f"Connected to Binance {'Testnet' if Config.TESTNET else 'Production'}"
@@ -39,7 +38,7 @@ class BinanceAPIClient:
             float: Current price
         """
         try:
-            ticker = self.client.ticker_price(symbol=symbol)
+            ticker = self.client.futures_symbol_ticker(symbol=symbol)
             return float(ticker['price'])
         except Exception as e:
             bot_logger.error(f"Failed to fetch price for {symbol}: {e}")
@@ -53,7 +52,7 @@ class BinanceAPIClient:
             dict: Account balance information
         """
         try:
-            account = self.client.account()
+            account = self.client.futures_account()
             return account
         except Exception as e:
             bot_logger.error(f"Failed to fetch account balance: {e}")
@@ -63,10 +62,7 @@ class BinanceAPIClient:
         """Get available USDT balance"""
         try:
             account = self.get_balance()
-            for asset in account.get('assets', []):
-                if asset['asset'] == 'USDT':
-                    return float(asset['availableBalance'])
-            return 0.0
+            return float(account.get('availableBalance', 0))
         except Exception as e:
             bot_logger.error(f"Failed to fetch available balance: {e}")
             raise
@@ -83,7 +79,7 @@ class BinanceAPIClient:
             dict: Cancellation response
         """
         try:
-            response = self.client.cancel_order(symbol=symbol, orderId=order_id)
+            response = self.client.futures_cancel_order(symbol=symbol, orderId=order_id)
             bot_logger.info(f"Cancelled order {order_id} for {symbol}")
             return response
         except Exception as e:
@@ -102,9 +98,9 @@ class BinanceAPIClient:
         """
         try:
             if symbol:
-                orders = self.client.get_open_orders(symbol=symbol)
+                orders = self.client.futures_get_open_orders(symbol=symbol)
             else:
-                orders = self.client.get_orders()
+                orders = self.client.futures_get_open_orders()
             return orders
         except Exception as e:
             bot_logger.error(f"Failed to fetch open orders: {e}")
@@ -125,7 +121,7 @@ class BinanceAPIClient:
             if not 1 <= leverage <= 125:
                 raise ValidationError(f"Leverage must be between 1-125, got: {leverage}")
 
-            response = self.client.change_leverage(
+            response = self.client.futures_change_leverage(
                 symbol=symbol,
                 leverage=leverage
             )
@@ -133,4 +129,5 @@ class BinanceAPIClient:
             return response
         except Exception as e:
             bot_logger.error(f"Failed to set leverage: {e}")
+            raise
             raise
